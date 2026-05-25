@@ -4,7 +4,7 @@
 
 ---
 
-#⚠️ IMPORTANTE — Aviso de Windows SmartScreen
+# ⚠️ IMPORTANTE — Aviso de Windows SmartScreen
 Es posible que, al descargar y ejecutar CaskIA por primera vez, Windows te muestre una pantalla azul de advertencia llamada SmartScreen. Si esto ocurre, es completamente normal y no significa que el programa tenga virus.
 
 ¿Por qué ocurre esto?
@@ -14,7 +14,7 @@ En pocas palabras: SmartScreen no sabe si el programa es malicioso, solo sabe qu
 
 Si quieres comprobarlo tú mismo, el código fuente está disponible y puedes revisarlo.
 
-#✅ Cómo aceptar SmartScreen paso a paso
+# ✅ Cómo aceptar SmartScreen paso a paso
 Cuando aparezca la pantalla azul:
 
 Haz clic en "Más información"
@@ -25,9 +25,9 @@ Haz clic en "Ejecutar de todas formas"
 
 Listo, CaskIA se abrirá normalmente.
 
-#🔁 Solo tendrás que hacer esto una vez. A partir de ahí CaskIA tiene un sistema de actualización automática integrado. Cuando haya una versión nueva te avisará dentro de la propia aplicación y se actualizará sola, sin que vuelva a saltar SmartScreen nunca más.
+# 🔁 Solo tendrás que hacer esto una vez. A partir de ahí CaskIA tiene un sistema de actualización automática integrado. Cuando haya una versión nueva te avisará dentro de la propia aplicación y se actualizará sola, sin que vuelva a saltar SmartScreen nunca más.
 
-##🛡️ ¿Puedo fiarme?
+## 🛡️ ¿Puedo fiarme?
 Sí. Estas son las razones:
 
 CaskIA está diseñada principalmente para correr de forma local en tu ordenador, aunque también permite la integración de modelos online si decides configurarlos.
