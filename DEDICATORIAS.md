@@ -25,5 +25,5 @@ Así, el nombre no solo representa la unión de aquel sueño con la tecnología,
 ### 👶 Para Mateo
 > *Con cariño para Mateo, para el día que seas mayor y recuerdes lo que nos unía el casco de Iron Man, nuestro "caski".* ✨
 
-### 👩‍❤️‍👨 A mi compañera de vida
-> *A mi compañera de vida, que con su paciencia y amor me recuerda siempre que el tiempo juntos es lo más valioso, y cuya fe en mi capacidad me hace creer que podría llegar a cualquier meta. Gracias por estar siempre ahí, incluso en los días de programación.* ❤️
+### 👩‍❤️‍👨 A mi mujer
+> *A mi mujer, que con su paciencia y amor me recuerda siempre que el tiempo juntos es lo más valioso, y cuya fe en mi capacidad me hace creer que podría llegar a cualquier meta. Gracias por estar siempre ahí, incluso en los días de programación.* ❤️
