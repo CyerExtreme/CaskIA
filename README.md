@@ -46,7 +46,16 @@ La aplicación se conecta a internet solo para buscar información cuando se lo 
 2. Acepta SmartScreen como se explica arriba
 3. La primera vez CaskIA instalará automáticamente todo lo necesario
 
-**Requisitos:** Windows 10/11 con conexión a internet para la primera instalación.
+---
+
+## 📋 Requisitos del Sistema
+
+Para garantizar el correcto funcionamiento de la interfaz y la ejecución de los modelos, el equipo debe cumplir con las siguientes especificaciones:
+
+* **Sistema Operativo:** Windows 10 o superior.
+* **Memoria RAM:** Mínimo 8 GB de RAM (o superior).
+* **Memoria de Gráfica (VRAM):** No es obligatoria para la configuración base, pero **sí es requerida** si se desea trabajar con modelos superiores o de mayor tamaño.
+* 
 
 ---
 
