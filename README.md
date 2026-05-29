@@ -78,6 +78,9 @@ CaskIA es completamente gratuito y lo seguirá siendo. Si te resulta útil y qui
 
 > *Cada pequeña aportación ayuda a mantener el proyecto vivo y a seguir mejorándolo.*
 
+[Haz clic aquí para donar por PayPal](https://www.paypal.me/CaskIAOficial)
+
+
 ---
 
 ## 💝 Historia y Agradecimientos
