@@ -1,4 +1,4 @@
-# 🟠 CaskIA
+# 🔵 CaskIA
 
 > Asistente de inteligencia artificial local tipo Jarvis para Windows, construido con Python y modelos de lenguaje que corren 100% en tu máquina.
 
