@@ -21,13 +21,6 @@
 html { scroll-behavior: smooth; }
 body { background: var(--negro); color: var(--texto); font-family: 'Rajdhani', sans-serif; overflow-x: hidden; }
 
-body::after {
-    content: '';
-    position: fixed; inset: 0;
-    background: repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.03) 3px,rgba(0,0,0,0.03) 4px);
-    pointer-events: none; z-index: 9998;
-}
-
 #bg-canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; opacity:0.3; pointer-events:none; }
 
 /* ── NAV ── */
