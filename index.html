@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%231892d9'/></svg>">    
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaskIA — Inteligencia Artificial Local</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+    --naranja: #1892d9;
+    --naranja-dim: rgba(24,146,217,0.15);
+    --naranja-glow: rgba(24,146,217,0.4);
+    --negro: #000000;
+    --gris: #0a0a0a;
+    --texto: #e0e0e0;
+    --verde: #00ff88;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--negro); color: var(--texto); font-family: 'Rajdhani', sans-serif; overflow-x: hidden; }
+
+body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.03) 3px,rgba(0,0,0,0.03) 4px);
+    pointer-events: none; z-index: 9998;
+}
+
+#bg-canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; opacity:0.3; pointer-events:none; }
+
+/* ── NAV ── */
+nav {
+    position: fixed; top:0; left:0; right:0; z-index:200;
+    display: flex; align-items:center; justify-content:space-between;
+    padding: 18px 48px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.97), transparent);
+    border-bottom: 1px solid rgba(24,146,217,0.07);
+}
+.nav-logo { font-family:'Orbitron',monospace; font-size:20px; font-weight:900; color:var(--naranja); letter-spacing:4px; text-shadow:0 0 20px var(--naranja-glow); text-decoration:none; }
+.nav-logo span { color:#fff; opacity:0.45; font-weight:400; }
+.nav-links { display:flex; gap:32px; list-style:none; }
+.nav-links a { color:var(--texto); text-decoration:none; font-size:13px; letter-spacing:3px; text-transform:uppercase; opacity:0.65; transition:all 0.2s; font-family:'Share Tech Mono',monospace; }
+.nav-links a:hover { opacity:1; color:var(--naranja); }
+.nav-cta { border:1px solid var(--naranja); padding:7px 18px; opacity:1 !important; color:var(--naranja) !important; transition:all 0.2s !important; }
+.nav-cta:hover { background:var(--naranja) !important; color:#000 !important; }
+
+/* Hamburguesa */
+.hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; z-index:300; }
+.hamburger span { display:block; width:24px; height:2px; background:var(--naranja); transition:all 0.3s; }
+.hamburger.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+.hamburger.open span:nth-child(2) { opacity:0; }
+.hamburger.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
+
+/* Menú móvil */
+.mobile-menu {
+    display:none; position:fixed; inset:0;
+    background:rgba(0,0,0,0.98); z-index:199;
+    flex-direction:column; align-items:center; justify-content:center; gap:36px;
+}
+.mobile-menu.open { display:flex; }
+.mobile-menu a { font-family:'Orbitron',monospace; font-size:18px; letter-spacing:5px; color:#fff; text-decoration:none; opacity:0.5; transition:all 0.2s; }
+.mobile-menu a:hover, .mobile-menu a:active { opacity:1; color:var(--naranja); }
+.mobile-menu .mm-sep { width:40px; height:1px; background:rgba(24,146,217,0.2); }
+
+@media (max-width:768px) {
+    nav { padding:16px 20px; }
+    .nav-links { display:none; }
+    .hamburger { display:flex; }
+}
+
+/* ── HERO ── */
+#inicio {
+    position:relative; min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:120px 24px 80px; z-index:1;
+}
+.hero-badge { display:inline-flex; align-items:center; gap:8px; border:1px solid rgba(24,146,217,0.5); padding:6px 16px; border-radius:20px; font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:3px; color:var(--naranja); opacity:1; margin-bottom:32px; animation:fadeUp 0.8s ease both; }
+.hero-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--verde); box-shadow:0 0 8px var(--verde); animation:pulse-dot 2s infinite; }
+@keyframes pulse-dot { 0%,100%{opacity:0.4} 50%{opacity:1} }
+.hero-title { font-family:'Orbitron',monospace; font-size:clamp(52px,10vw,110px); font-weight:900; line-height:0.95; color:#fff; animation:fadeUp 0.8s 0.1s ease both; }
+.hero-title .accent { color:var(--naranja); text-shadow:0 0 40px var(--naranja-glow),0 0 80px rgba(24,146,217,0.15); display:block; }
+.hero-subtitle { font-size:clamp(14px,2vw,17px); color:var(--texto); opacity:0.7; max-width:540px; line-height:1.75; margin:28px auto 0; font-weight:300; letter-spacing:0.5px; animation:fadeUp 0.8s 0.2s ease both; }
+.hero-actions { display:flex; gap:14px; margin-top:44px; flex-wrap:wrap; justify-content:center; animation:fadeUp 0.8s 0.3s ease both; }
+.btn-primary { background:var(--naranja); color:#000; border:none; padding:15px 34px; font-family:'Orbitron',monospace; font-size:13px; font-weight:700; letter-spacing:3px; cursor:pointer; text-decoration:none; transition:all 0.2s; clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%); }
+.btn-primary:hover { background:#fff; box-shadow:0 0 30px var(--naranja-glow); transform:translateY(-2px); }
+.btn-secondary { background:transparent; color:var(--texto); border:1px solid rgba(255,255,255,0.12); padding:15px 34px; font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:3px; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+.btn-secondary:hover { border-color:var(--naranja); color:var(--naranja); }
+
+.hero-orb { position:absolute; width:460px; height:460px; border-radius:50%; background:radial-gradient(circle at 40% 40%,rgba(24,146,217,0.07) 0%,transparent 70%); border:1px solid rgba(24,146,217,0.05); top:50%; left:50%; transform:translate(-50%,-50%); animation:orb-pulse 6s ease-in-out infinite; pointer-events:none; }
+.hero-orb::before { content:''; position:absolute; inset:30px; border-radius:50%; border:1px solid rgba(24,146,217,0.05); animation:orb-pulse 6s 1.5s ease-in-out infinite; }
+@keyframes orb-pulse { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.6} 50%{transform:translate(-50%,-50%) scale(1.04);opacity:1} }
+
+.scroll-hint { position:absolute; bottom:28px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:6px; opacity:0.2; }
+.scroll-hint span { font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:3px; color:var(--naranja); }
+.scroll-line { width:1px; height:36px; background:linear-gradient(to bottom,var(--naranja),transparent); animation:scroll-anim 2s ease-in-out infinite; }
+@keyframes scroll-anim { 0%,100%{opacity:0.5;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(1.2)} }
+
+/* ── STATS ── */
+#stats { position:relative; z-index:1; border-top:1px solid rgba(24,146,217,0.07); border-bottom:1px solid rgba(24,146,217,0.07); display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); }
+.stat-item { padding:36px 24px; text-align:center; border-right:1px solid rgba(24,146,217,0.07); }
+.stat-item:last-child { border-right:none; }
+.stat-num { font-family:'Orbitron',monospace; font-size:38px; font-weight:900; color:var(--naranja); text-shadow:0 0 20px var(--naranja-glow); display:block; }
+.stat-label { font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:3px; color:var(--texto); opacity:0.55; display:block; margin-top:6px; }
+
+/* ── SECCIONES COMUNES ── */
+.seccion { position:relative; z-index:1; padding:90px 48px; max-width:1200px; margin:0 auto; }
+.seccion-full { position:relative; z-index:1; padding:90px 48px; }
+.section-label { font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:4px; color:var(--naranja); opacity:0.85; margin-bottom:10px; }
+.section-title { font-family:'Orbitron',monospace; font-size:clamp(26px,4vw,44px); font-weight:700; color:#fff; line-height:1.1; margin-bottom:56px; }
+.section-title em { color:var(--naranja); font-style:normal; }
+
+/* ── FEATURES ── */
+#caracteristicas { border-top:1px solid rgba(24,146,217,0.06); }
+.features-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1px; background:rgba(24,146,217,0.05); border:1px solid rgba(24,146,217,0.05); }
+.feature-card { background:var(--negro); padding:36px 32px; position:relative; overflow:hidden; transition:background 0.3s; }
+.feature-card::before { content:''; position:absolute; top:0; left:0; width:100%; height:2px; background:var(--naranja); transform:scaleX(0); transform-origin:left; transition:transform 0.3s; }
+.feature-card:hover::before { transform:scaleX(1); }
+.feature-card:hover { background:rgba(24,146,217,0.025); }
+.feature-icon { font-size:26px; margin-bottom:18px; display:block; }
+.feature-title { font-family:'Orbitron',monospace; font-size:15px; font-weight:700; letter-spacing:2px; color:#fff; margin-bottom:10px; }
+.feature-desc { font-size:14px; line-height:1.7; color:var(--texto); opacity:0.7; font-weight:300; }
+.feature-tag { display:inline-block; margin-top:14px; font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:2px; color:var(--naranja); opacity:1; border:1px solid rgba(24,146,217,0.5); padding:3px 8px; }
+
+/* ── REQUISITOS ── */
+#requisitos { border-top:1px solid rgba(24,146,217,0.06); background:linear-gradient(to bottom,transparent,rgba(24,146,217,0.015),transparent); }
+.req-grid { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start; }
+.req-list { list-style:none; display:flex; flex-direction:column; gap:14px; margin-top:28px; }
+.req-list li { display:flex; align-items:flex-start; gap:12px; font-size:14px; line-height:1.6; opacity:0.8; }
+.req-list li::before { content:'›'; color:var(--naranja); font-size:18px; flex-shrink:0; margin-top:-2px; }
+.info-box { background:rgba(24,146,217,0.04); border:1px solid rgba(24,146,217,0.12); padding:26px; margin-top:28px; }
+.info-box-title { font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:3px; color:var(--naranja); margin-bottom:10px; }
+.info-box p { font-size:14px; line-height:1.75; opacity:0.7; }
+
+/* ── SMARTSCREEN ── */
+#smartscreen { border-top:1px solid rgba(24,146,217,0.06); }
+.alert-box { border:1px solid rgba(24,146,217,0.25); background:rgba(24,146,217,0.03); padding:36px 40px; position:relative; overflow:hidden; }
+.alert-box::before { content:'⚠'; position:absolute; right:28px; top:28px; font-size:52px; opacity:0.05; }
+.alert-title { font-family:'Orbitron',monospace; font-size:15px; font-weight:700; letter-spacing:2px; color:var(--naranja); margin-bottom:14px; }
+.alert-text { font-size:14px; line-height:1.8; opacity:0.75; max-width:680px; }
+.steps { display:flex; flex-direction:column; gap:12px; margin-top:22px; }
+.step { display:flex; align-items:center; gap:14px; font-size:14px; opacity:0.8; }
+.step-num { width:30px; height:30px; border:1px solid var(--naranja); display:flex; align-items:center; justify-content:center; font-family:'Orbitron',monospace; font-size:13px; color:var(--naranja); flex-shrink:0; }
+
+/* ── DEDICATORIAS ── */
+#dedicatorias { border-top:1px solid rgba(24,146,217,0.06); }
+.ded-intro { font-size:15px; line-height:1.85; opacity:0.75; max-width:720px; margin-bottom:48px; }
+.ded-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; margin-bottom:48px; }
+.ded-card { border:1px solid rgba(24,146,217,0.12); padding:32px 28px; background:rgba(24,146,217,0.02); position:relative; }
+.ded-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:var(--naranja); opacity:0.4; }
+.ded-card-title { font-family:'Orbitron',monospace; font-size:15px; letter-spacing:2px; color:var(--naranja); margin-bottom:14px; opacity:1; }
+.ded-card-text { font-size:14px; line-height:1.85; opacity:0.72; font-style:italic; }
+.ded-origen { border-top:1px solid rgba(24,146,217,0.08); padding-top:40px; }
+.ded-origen-title { font-family:'Orbitron',monospace; font-size:15px; font-weight:700; color:#fff; letter-spacing:2px; margin-bottom:16px; }
+.ded-origen p { font-size:14px; line-height:1.85; opacity:0.72; max-width:740px; margin-bottom:16px; }
+
+/* ── DESCARGA ── */
+#descarga { border-top:1px solid rgba(24,146,217,0.06); text-align:center; }
+.download-box { max-width:600px; margin:0 auto; }
+.download-version { font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:3px; color:var(--verde); opacity:0.65; margin-bottom:20px; }
+.download-title { font-family:'Orbitron',monospace; font-size:clamp(30px,5vw,52px); font-weight:900; color:#fff; line-height:1.1; margin-bottom:14px; }
+.download-sub { font-size:14px; opacity:0.6; margin-bottom:36px; letter-spacing:1px; }
+.download-btn { display:inline-flex; align-items:center; gap:12px; background:var(--naranja); color:#000; text-decoration:none; padding:18px 44px; font-family:'Orbitron',monospace; font-size:13px; font-weight:700; letter-spacing:3px; transition:all 0.25s; clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px)); }
+.download-btn:hover { background:#fff; box-shadow:0 0 50px var(--naranja-glow); transform:translateY(-3px); }
+.download-meta { display:flex; align-items:center; justify-content:center; gap:28px; margin-top:28px; flex-wrap:wrap; }
+.download-meta span { font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:2px; opacity:0.5; }
+.download-meta span::before { content:'✓ '; color:var(--verde); opacity:0.7; }
+
+/* ── DONACIÓN ── */
+#donacion { border-top:1px solid rgba(24,146,217,0.06); text-align:center; }
+.donate-text { font-size:14px; opacity:0.65; line-height:1.75; margin-bottom:22px; max-width:480px; margin-left:auto; margin-right:auto; }
+.donate-btn { display:inline-flex; align-items:center; gap:10px; border:1px solid rgba(24,146,217,0.5); color:var(--naranja); text-decoration:none; padding:12px 26px; font-family:'Share Tech Mono',monospace; font-size:13px; letter-spacing:2px; transition:all 0.2s; opacity:0.9; }
+.donate-btn:hover { opacity:1; background:rgba(24,146,217,0.07); border-color:var(--naranja); }
+
+/* ── FOOTER ── */
+footer { position:relative; z-index:1; padding:36px 48px; border-top:1px solid rgba(24,146,217,0.06); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+.footer-logo { font-family:'Orbitron',monospace; font-size:13px; font-weight:900; color:var(--naranja); opacity:0.75; letter-spacing:3px; }
+.footer-text { font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:2px; opacity:0.45; }
+.footer-links { display:flex; gap:22px; list-style:none; }
+.footer-links a { font-family:'Share Tech Mono',monospace; font-size:8px; letter-spacing:2px; color:var(--texto); opacity:0.45; text-decoration:none; transition:opacity 0.2s; }
+.footer-links a:hover { opacity:0.7; color:var(--naranja); }
+
+/* ── REVEAL ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.65s ease,transform 0.65s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+/* ── CURSOR ── */
+.cursor-dot { width:5px;height:5px;background:var(--naranja);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 8px var(--naranja-glow); }
+.cursor-ring { width:26px;height:26px;border:1px solid rgba(24,146,217,0.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:all 0.15s ease; }
+@media(hover:none){.cursor-dot,.cursor-ring{display:none}}
+
+/* ── MOBILE ── */
+@media(max-width:768px){
+    .seccion,.seccion-full{padding:60px 20px}
+    .req-grid{grid-template-columns:1fr;gap:20px}
+    footer{padding:28px 20px;flex-direction:column;align-items:flex-start}
+    .hero-orb{width:280px;height:280px}
+    #stats{grid-template-columns:1fr 1fr}
+    .stat-item{border-bottom:1px solid rgba(24,146,217,0.07)}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<div class="cursor-dot" id="cdot"></div>
+<div class="cursor-ring" id="cring"></div>
+
+<!-- NAV -->
+<nav>
+    <a href="#inicio" class="nav-logo">Cask<span>IA</span></a>
+    <ul class="nav-links">
+        <li><a href="#caracteristicas">Características</a></li>
+        <li><a href="#requisitos">Requisitos</a></li>
+        <li><a href="#dedicatorias">Historia</a></li>
+        <li><a href="#descarga" class="nav-cta">Descargar</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+    </div>
+</nav>
+
+<!-- MENÚ MÓVIL -->
+<div class="mobile-menu" id="mobile-menu">
+    <a href="#caracteristicas" onclick="toggleMenu()">CARACTERÍSTICAS</a>
+    <div class="mm-sep"></div>
+    <a href="#requisitos" onclick="toggleMenu()">REQUISITOS</a>
+    <div class="mm-sep"></div>
+    <a href="#smartscreen" onclick="toggleMenu()">SMARTSCREEN</a>
+    <div class="mm-sep"></div>
+    <a href="#dedicatorias" onclick="toggleMenu()">HISTORIA</a>
+    <div class="mm-sep"></div>
+    <a href="#descarga" onclick="toggleMenu()">DESCARGAR</a>
+    <div class="mm-sep"></div>
+    <a href="https://www.paypal.me/CaskIAOficial" target="_blank" onclick="toggleMenu()">☕ DONAR</a>
+</div>
+
+<!-- HERO -->
+<section id="inicio">
+    <div class="hero-orb"></div>
+    <div class="hero-badge">● SISTEMA ONLINE — V1.0 DISPONIBLE</div>
+    <h1 class="hero-title">Tu IA.<br><span class="accent">Local.<br>Privada.</span></h1>
+    <p class="hero-subtitle">Asistente de inteligencia artificial tipo Jarvis para Windows. 100% local. Sin suscripciones. Sin servidores externos. Sin límites.</p>
+    <div class="hero-actions">
+        <a href="https://github.com/CyerExtreme/CaskIA/releases" class="btn-primary" target="_blank">DESCARGAR GRATIS</a>
+    </div>
+    <div class="scroll-hint">
+        <span>SCROLL</span>
+        <div class="scroll-line"></div>
+    </div>
+</section>
+
+<!-- STATS -->
+<div id="stats">
+    <div class="stat-item reveal"><span class="stat-num">100%</span><span class="stat-label">LOCAL Y PRIVADO</span></div>
+    <div class="stat-item reveal"><span class="stat-num">0€</span><span class="stat-label">COSTE MENSUAL</span></div>
+    <div class="stat-item reveal"><span class="stat-num">∞</span><span class="stat-label">CONVERSACIONES</span></div>
+    <div class="stat-item reveal"><span class="stat-num">8GB</span><span class="stat-label">RAM MÍNIMA</span></div>
+</div>
+
+<!-- CARACTERÍSTICAS -->
+<section id="caracteristicas">
+    <div class="seccion">
+        <div class="reveal">
+            <div class="section-label">// CAPACIDADES</div>
+            <h2 class="section-title">Todo el poder de la IA.<br><em>En tu máquina.</em></h2>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <span class="feature-icon">🧠</span>
+                <div class="feature-title">MODELOS LOCALES</div>
+                <p class="feature-desc">Ejecuta modelos de lenguaje directamente en tu PC mediante Ollama. Tus conversaciones no salen nunca de tu ordenador.</p>
+                <span class="feature-tag">POWERED BY OLLAMA</span>
+            </div>
+            <div class="feature-card reveal">
+                <span class="feature-icon">🎙️</span>
+                <div class="feature-title">VOZ Y AUDIO</div>
+                <p class="feature-desc">Habla con CaskIA usando tu micrófono. Reconocimiento de voz integrado con Whisper para interacciones naturales.</p>
+                <span class="feature-tag">WHISPER STT</span>
+            </div>
+            <div class="feature-card reveal">
+                <span class="feature-icon">🖼️</span>
+                <div class="feature-title">GENERACIÓN DE IMÁGENES</div>
+                <p class="feature-desc">Crea imágenes con Stable Diffusion localmente o mediante API. Sin censura externa, sin límites de generación.</p>
+                <span class="feature-tag">STABLE DIFFUSION</span>
+            </div>
+            <div class="feature-card reveal">
+                <span class="feature-icon">📱</span>
+                <div class="feature-title">ACCESO MÓVIL</div>
+                <p class="feature-desc">Conéctate a tu CaskIA desde cualquier lugar del mundo mediante tu móvil. Tunnel cifrado automático sin configuración.</p>
+                <span class="feature-tag">CLOUDFLARE TUNNEL</span>
+            </div>
+            <div class="feature-card reveal">
+                <span class="feature-icon">⚡</span>
+                <div class="feature-title">MÚLTIPLES MODELOS</div>
+                <p class="feature-desc">Cambia entre modelos en segundos. Desde ultra-rápidos hasta super potentes, elige según tu tarea.</p>
+                <span class="feature-tag">LLAMA · GEMMA · HERMES</span>
+            </div>
+            <div class="feature-card reveal">
+                <span class="feature-icon">🔄</span>
+                <div class="feature-title">ACTUALIZACIONES AUTOMÁTICAS</div>
+                <p class="feature-desc">CaskIA se actualiza solo cuando hay una nueva versión. Sin descargas manuales ni configuraciones.</p>
+                <span class="feature-tag">AUTO-UPDATE</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- REQUISITOS -->
+<section id="requisitos">
+    <div class="seccion">
+        <div class="reveal">
+            <div class="section-label">// REQUISITOS DEL SISTEMA</div>
+            <h2 class="section-title">Lo que<br><em>necesitas.</em></h2>
+        </div>
+        <div class="req-grid">
+            <div class="reveal">
+                <ul class="req-list">
+                    <li>Windows 10 o superior</li>
+                    <li>Mínimo 8 GB de RAM</li>
+                    <li>Conexión a internet para la primera instalación</li>
+                    <li>VRAM recomendada para modelos avanzados</li>
+                    <li>Ollama — se instala automáticamente</li>
+                </ul>
+            </div>
+            <div>
+                <div class="info-box reveal">
+                    <div class="info-box-title">// SIN TELEMETRÍA</div>
+                    <p>CaskIA no recopila ningún dato cuando usas modelos locales. Tus conversaciones son tuyas y solo tuyas. La app solo se conecta a internet cuando tú se lo pides.</p>
+                </div>
+                <div class="info-box reveal" style="margin-top:14px">
+                    <div class="info-box-title">// CÓDIGO ABIERTO</div>
+                    <p>El código fuente está disponible en GitHub para que puedas revisarlo y verificar que CaskIA hace exactamente lo que dice.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SMARTSCREEN -->
+<section id="smartscreen">
+    <div class="seccion">
+        <div class="reveal">
+            <div class="section-label">// AVISO IMPORTANTE</div>
+            <h2 class="section-title">Windows<br><em>SmartScreen.</em></h2>
+        </div>
+        <div class="alert-box reveal">
+            <div class="alert-title">⚠ ¿POR QUÉ APARECE ESTA ADVERTENCIA?</div>
+            <p class="alert-text">Es posible que Windows muestre una pantalla azul al ejecutar CaskIA por primera vez. Esto es completamente normal. SmartScreen no analiza si un programa es peligroso — solo comprueba si tiene una firma digital de pago. CaskIA es un proyecto personal sin ánimo de lucro y ese certificado cuesta dinero, algo que no puedo permitirme para una app gratuita.</p>
+            <div class="steps">
+                <div class="step"><div class="step-num">01</div><span>Haz clic en <strong>"Más información"</strong> en la pantalla azul</span></div>
+                <div class="step"><div class="step-num">02</div><span>Haz clic en <strong>"Ejecutar de todas formas"</strong></span></div>
+                <div class="step"><div class="step-num">03</div><span>Solo ocurre una vez. Las actualizaciones no vuelven a mostrarlo.</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DEDICATORIAS -->
+<section id="dedicatorias">
+    <div class="seccion">
+        <div class="reveal">
+            <div class="section-label">// HISTORIA Y DEDICATORIAS</div>
+            <h2 class="section-title">El lado<br><em>humano.</em></h2>
+        </div>
+        <p class="ded-intro reveal">Este proyecto no es solo líneas de código y archivos ejecutables. Es el resultado de un sueño, de la curiosidad técnica y, sobre todo, de las personas que hacen que todo el esfuerzo valga la pena.</p>
+
+        <div class="ded-origen reveal">
+            <div class="ded-origen-title">¿Cómo nació CaskIA?</div>
+            <p>Desde que vi las películas de Iron Man en sus inicios, siempre tuve un sueño: tener un asistente virtual tan capaz y avanzado como Jarvis. Con los avances tecnológicos de hoy, decidí que era el momento de dejar de esperar y crear mi propia versión.</p>
+            <div class="ded-origen-title" style="margin-top:32px">¿Por qué el nombre "CaskIA"?</div>
+            <p>El nombre tiene un origen tan especial como el proyecto mismo. Todo empezó con mi hijo pequeño. Cada vez que ve mi réplica del casco de Iron Man, intenta pronunciar "casco", pero con su ternura habitual lo llama <strong style="color:var(--naranja)">"Caski"</strong>.</p>
+            <p>Esa palabra se quedó grabada en mi memoria. Cuando decidí darle nombre a mi asistente, no pude evitar recordar ese momento. CaskIA no es solo un software — es el resultado de la curiosidad, de seguir persiguiendo aquel sueño y del apoyo constante de los míos.</p>
+        </div>
+
+        <div class="ded-cards" style="margin-top:48px">
+            <div class="ded-card reveal">
+                <div class="ded-card-title">👶 PARA MATEO</div>
+                <p class="ded-card-text">"Con cariño para Mateo, para el día que seas mayor y recuerdes lo que nos unía el casco de Iron Man, nuestro 'Caski'." ✨</p>
+            </div>
+            <div class="ded-card reveal">
+                <div class="ded-card-title">❤️ A MI MUJER</div>
+                <p class="ded-card-text">"A mi mujer, que con su paciencia y amor me recuerda siempre que el tiempo juntos es lo más valioso, y cuya fe en mi capacidad me hace creer que podría llegar a cualquier meta. Gracias por estar siempre ahí, incluso en los días de programación."</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DESCARGA -->
+<section id="descarga">
+    <div class="seccion" style="text-align:center">
+        <div class="download-box">
+            <div class="download-version reveal">● V1.0 — MAYO 2026</div>
+            <h2 class="download-title reveal">Descarga<br>CaskIA.</h2>
+            <p class="download-sub reveal">Gratis. Para siempre.</p>
+            <a href="https://github.com/CyerExtreme/CaskIA/releases" target="_blank" class="download-btn reveal">
+                ⬇ DESCARGAR PARA WINDOWS
+            </a>
+            <div class="download-meta reveal">
+                <span>SIN REGISTRO</span>
+                <span>SIN SUSCRIPCIÓN</span>
+                <span>CÓDIGO ABIERTO</span>
+                <span>100% GRATIS</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DONACIÓN -->
+<section id="donacion">
+    <div class="seccion" style="text-align:center">
+        <div class="section-label reveal" style="margin-bottom:14px">// APOYA EL PROYECTO</div>
+        <p class="donate-text reveal">CaskIA es completamente gratuito y lo seguirá siendo. Si te resulta útil y quieres contribuir a que siga adelante, cualquier donación es bienvenida.</p>
+        <a href="https://www.paypal.me/CaskIAOficial" target="_blank" class="donate-btn reveal">☕ DONAR POR PAYPAL</a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-logo">CASKIA</div>
+    <span class="footer-text">PROYECTO PERSONAL · USO LIBRE NO COMERCIAL</span>
+    <ul class="footer-links">
+        <li><a href="https://github.com/CyerExtreme/CaskIA/releases" target="_blank">RELEASES</a></li>
+        <li><a href="https://www.paypal.me/CaskIAOficial" target="_blank">DONAR</a></li>
+    </ul>
+</footer>
+
+<script>
+// ── CURSOR ─────────────────────────────────────────────────────────────────
+const cdot = document.getElementById('cdot');
+const cring = document.getElementById('cring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY;
+    cdot.style.left=mx+'px'; cdot.style.top=my+'px';
+});
+(function animRing(){ rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; cring.style.left=rx+'px'; cring.style.top=ry+'px'; requestAnimationFrame(animRing); })();
+document.querySelectorAll('a,button,.feature-card,.ded-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ cring.style.transform='translate(-50%,-50%) scale(1.8)'; cring.style.borderColor='rgba(24,146,217,0.7)'; });
+    el.addEventListener('mouseleave',()=>{ cring.style.transform='translate(-50%,-50%) scale(1)'; cring.style.borderColor='rgba(24,146,217,0.4)'; });
+});
+
+// ── HAMBURGUESA ─────────────────────────────────────────────────────────────
+function toggleMenu(){
+    document.getElementById('hamburger').classList.toggle('open');
+    document.getElementById('mobile-menu').classList.toggle('open');
+    document.body.style.overflow = document.getElementById('mobile-menu').classList.contains('open') ? 'hidden' : '';
+}
+
+// ── CANVAS ─────────────────────────────────────────────────────────────────
+const canvas=document.getElementById('bg-canvas');
+const ctx=canvas.getContext('2d');
+let W,H,nodes=[];
+const N=55;
+function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
+resize(); window.addEventListener('resize',resize);
+for(let i=0;i<N;i++) nodes.push({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.2+0.4});
+(function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<nodes.length;i++){
+        for(let j=i+1;j<nodes.length;j++){
+            const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.sqrt(dx*dx+dy*dy);
+            if(d<170){ ctx.beginPath(); ctx.moveTo(nodes[i].x,nodes[i].y); ctx.lineTo(nodes[j].x,nodes[j].y); ctx.strokeStyle=`rgba(24,146,217,${(1-d/170)*0.13})`; ctx.lineWidth=0.5; ctx.stroke(); }
+        }
+    }
+    nodes.forEach(n=>{ ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2); ctx.fillStyle='rgba(24,146,217,0.35)'; ctx.fill(); n.x+=n.vx; n.y+=n.vy; if(n.x<0||n.x>W)n.vx*=-1; if(n.y<0||n.y>H)n.vy*=-1; });
+    requestAnimationFrame(draw);
+})();
+
+// ── REVEAL ON SCROLL ────────────────────────────────────────────────────────
+const obs=new IntersectionObserver(entries=>{
+    entries.forEach((e,i)=>{ if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*70); obs.unobserve(e.target); } });
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
