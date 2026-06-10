@@ -225,6 +225,7 @@ footer { position:relative; z-index:1; padding:36px 48px; border-top:1px solid r
     <a href="#inicio" class="nav-logo">Cask<span>IA</span></a>
     <ul class="nav-links">
         <li><a href="#caracteristicas">Características</a></li>
+        <li><a href="#novedades">Novedades</a></li>
         <li><a href="#requisitos">Requisitos</a></li>
         <li><a href="#dedicatorias">Historia</a></li>
         <li><a href="#descarga" class="nav-cta">Descargar</a></li>
@@ -237,6 +238,8 @@ footer { position:relative; z-index:1; padding:36px 48px; border-top:1px solid r
 <!-- MENÚ MÓVIL -->
 <div class="mobile-menu" id="mobile-menu">
     <a href="#caracteristicas" onclick="toggleMenu()">CARACTERÍSTICAS</a>
+    <div class="mm-sep"></div>
+    <a href="#novedades" onclick="toggleMenu()">NOVEDADES</a>
     <div class="mm-sep"></div>
     <a href="#requisitos" onclick="toggleMenu()">REQUISITOS</a>
     <div class="mm-sep"></div>
@@ -317,6 +320,101 @@ footer { position:relative; z-index:1; padding:36px 48px; border-top:1px solid r
                 <span class="feature-tag">AUTO-UPDATE</span>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- APP MÓVIL -->
+<section id="novedades" style="border-top:1px solid rgba(24,146,217,0.06); background:linear-gradient(to bottom,transparent,rgba(24,146,217,0.012),transparent);">
+    <div class="seccion">
+        <div class="reveal">
+            <div class="section-label">// NUEVO · VERSIÓN MÓVIL</div>
+            <h2 class="section-title">CaskIA<br><em>en tu bolsillo.</em></h2>
+        </div>
+
+        <!-- Intro -->
+        <p class="reveal" style="font-size:15px; line-height:1.85; opacity:0.72; max-width:680px; margin-bottom:56px;">La experiencia CaskIA ahora también en tu móvil. Conéctate a tu PC desde cualquier parte del mundo o usa el modo autónomo en la nube cuando tu ordenador esté apagado.</p>
+
+        <!-- Grid de funciones -->
+        <div class="features-grid reveal" style="margin-bottom:48px;">
+            <div class="feature-card">
+                <span class="feature-icon">🌍</span>
+                <div class="feature-title">ACCESO GLOBAL</div>
+                <p class="feature-desc">Conéctate a tu CaskIA del PC desde cualquier lugar del mundo. Tunnel cifrado automático mediante Cloudflare, sin abrir puertos ni configurar nada.</p>
+                <span class="feature-tag">CLOUDFLARE TUNNEL</span>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">☁️</span>
+                <div class="feature-title">MODO AUTÓNOMO</div>
+                <p class="feature-desc">Cuando tu PC está apagado, CaskIA móvil cambia automáticamente a modo nube. Sigues teniendo respuestas sin interrupciones.</p>
+                <span class="feature-tag">MODO NUBE</span>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">💬</span>
+                <div class="feature-title">HISTORIAL COMPLETO</div>
+                <p class="feature-desc">Todas tus conversaciones guardadas localmente en tu móvil. Organízalas, crea nuevas o borra las que no necesites.</p>
+                <span class="feature-tag">ALMACENAMIENTO LOCAL</span>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎙️</span>
+                <div class="feature-title">VOZ A TEXTO</div>
+                <p class="feature-desc">Habla directamente con CaskIA desde tu móvil. Reconocimiento de voz integrado para una experiencia completamente manos libres.</p>
+                <span class="feature-tag">STT INTEGRADO</span>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🔔</span>
+                <div class="feature-title">NOTIFICACIONES</div>
+                <p class="feature-desc">Recibe una alerta en tu móvil cuando CaskIA del PC termina de responder aunque la app esté en segundo plano.</p>
+                <span class="feature-tag">PUSH NOTIFICATIONS</span>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">📲</span>
+                <div class="feature-title">INSTALABLE</div>
+                <p class="feature-desc">Instálala como app nativa en Android e iOS desde el navegador. Sin pasar por la App Store. Sin permisos innecesarios.</p>
+                <span class="feature-tag">PWA · SIN APP STORE</span>
+            </div>
+        </div>
+
+        <!-- Bloque de transparencia -->
+        <div class="reveal" style="border:1px solid rgba(24,146,217,0.18); padding:36px 40px; position:relative; overflow:hidden; background:rgba(24,146,217,0.025);">
+            <div style="position:absolute; right:28px; top:28px; font-size:48px; opacity:0.04;">☁️</div>
+            <div style="font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:4px; color:var(--naranja); opacity:0.8; margin-bottom:10px;">// TRANSPARENCIA</div>
+            <div style="font-family:'Orbitron',monospace; font-size:15px; font-weight:700; color:#fff; letter-spacing:2px; margin-bottom:14px;">MODO AUTÓNOMO: IA EN LA NUBE</div>
+            <p style="font-size:14px; line-height:1.8; opacity:0.72; max-width:680px;">Cuando tu PC está apagado, el modo autónomo usa <strong style="color:var(--naranja)">Mistral AI</strong> — un modelo externo en la nube. En ese caso, los mensajes sí pasan por servidores externos. Si la privacidad total es importante para ti, mantén tu PC encendido para usar siempre el modelo local.</p>
+            <div style="display:flex; gap:28px; margin-top:22px; flex-wrap:wrap;">
+                <div style="display:flex; align-items:center; gap:8px; font-family:'Share Tech Mono',monospace; font-size:11px; letter-spacing:2px; color:var(--verde); opacity:0.85;"><span>✓</span> PC ENCENDIDO = 100% LOCAL</div>
+                <div style="display:flex; align-items:center; gap:8px; font-family:'Share Tech Mono',monospace; font-size:11px; letter-spacing:2px; color:var(--naranja); opacity:0.75;"><span>⚡</span> PC APAGADO = NUBE (MISTRAL)</div>
+            </div>
+        </div>
+
+        <!-- Seguridad -->
+        <div class="reveal" style="margin-top:24px; border:1px solid rgba(0,255,136,0.1); padding:36px 40px; background:rgba(0,255,136,0.012);">
+            <div style="font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:4px; color:var(--verde); opacity:0.7; margin-bottom:10px;">// SEGURIDAD DEL ACCESO MÓVIL</div>
+            <div style="font-family:'Orbitron',monospace; font-size:15px; font-weight:700; color:#fff; letter-spacing:2px; margin-bottom:20px;">Tu acceso, solo tuyo.</div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px;">
+                <div style="display:flex; gap:12px; align-items:flex-start;">
+                    <span style="color:var(--verde); font-size:16px; flex-shrink:0; margin-top:2px;">🔒</span>
+                    <div>
+                        <div style="font-family:'Share Tech Mono',monospace; font-size:11px; letter-spacing:2px; color:var(--verde); opacity:0.8; margin-bottom:4px;">TOKEN ÚNICO</div>
+                        <p style="font-size:13px; opacity:0.65; line-height:1.6;">Cada usuario tiene un token único generado automáticamente. Sin él, nadie puede acceder a tu CaskIA.</p>
+                    </div>
+                </div>
+                <div style="display:flex; gap:12px; align-items:flex-start;">
+                    <span style="color:var(--verde); font-size:16px; flex-shrink:0; margin-top:2px;">🔒</span>
+                    <div>
+                        <div style="font-family:'Share Tech Mono',monospace; font-size:11px; letter-spacing:2px; color:var(--verde); opacity:0.8; margin-bottom:4px;">PIN PERSONAL</div>
+                        <p style="font-size:13px; opacity:0.65; line-height:1.6;">Protege el acceso con un PIN configurable. Ideal si compartes el móvil o quieres una capa extra.</p>
+                    </div>
+                </div>
+                <div style="display:flex; gap:12px; align-items:flex-start;">
+                    <span style="color:var(--verde); font-size:16px; flex-shrink:0; margin-top:2px;">🔒</span>
+                    <div>
+                        <div style="font-family:'Share Tech Mono',monospace; font-size:11px; letter-spacing:2px; color:var(--verde); opacity:0.8; margin-bottom:4px;">HTTPS CIFRADO</div>
+                        <p style="font-size:13px; opacity:0.65; line-height:1.6;">Toda la comunicación viaja cifrada. El tunnel de Cloudflare garantiza que nadie intercepte tus mensajes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </section>
 
