@@ -415,8 +415,34 @@ footer { position:relative; z-index:1; padding:36px 48px; border-top:1px solid r
             </div>
         </div>
 
+        <!-- Botón acceso directo -->
+        <div class="reveal" style="text-align:center; margin-top:40px;">
+            <a href="https://cask-ia-movil.vercel.app" target="_blank" style="display:inline-flex; align-items:center; gap:14px; background:var(--naranja); color:#000; text-decoration:none; padding:18px 44px; font-family:'Orbitron',monospace; font-size:13px; font-weight:700; letter-spacing:3px; transition:all 0.25s; clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));" onmouseover="this.style.background='#fff';this.style.boxShadow='0 0 50px rgba(24,146,217,0.4)';this.style.transform='translateY(-3px)'" onmouseout="this.style.background='var(--naranja)';this.style.boxShadow='none';this.style.transform='translateY(0)'">
+                📱 ACCEDER A CASKIA MÓVIL
+            </a>
+            <p style="font-family:'Share Tech Mono',monospace; font-size:10px; letter-spacing:3px; opacity:0.4; margin-top:14px;">REQUIERE QR DE ACCESO O ENLACE PERSONAL</p>
+        </div>
+
     </div>
 </section>
+
+<!-- Badge flotante app móvil -->
+<style>
+#badge-movil { position:fixed; bottom:32px; right:28px; z-index:500; width:48px; height:48px; border-radius:50%; background:#000; border:1px solid rgba(24,146,217,0.4); display:flex; align-items:center; justify-content:center; cursor:pointer; text-decoration:none; transition:all 0.25s; animation:ring-pulse-badge 3s ease-in-out infinite; }
+#badge-movil:hover { border-color:var(--naranja); box-shadow:0 0 28px rgba(24,146,217,0.3); transform:scale(1.1); }
+#badge-movil:hover .badge-tooltip { opacity:1; }
+@keyframes ring-pulse-badge { 0%,100%{box-shadow:0 0 16px rgba(24,146,217,0.12)} 50%{box-shadow:0 0 26px rgba(24,146,217,0.32)} }
+.badge-tooltip { position:absolute; bottom:calc(100% + 10px); left:50%; transform:translateX(-50%); background:#000; border:1px solid rgba(24,146,217,0.4); padding:5px 12px; white-space:nowrap; font-family:'Share Tech Mono',monospace; font-size:9px; letter-spacing:2px; color:var(--naranja); opacity:0; transition:opacity 0.2s; pointer-events:none; }
+</style>
+<a href="https://cask-ia-movil.vercel.app" target="_blank" id="badge-movil">
+    <span style="display:flex; align-items:center; justify-content:center; width:100%; height:100%;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--naranja)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="2"/>
+            <circle cx="12" cy="18" r="1" fill="var(--naranja)"/>
+        </svg>
+    </span>
+    <span class="badge-tooltip">APP MÓVIL</span>
+</a>
 
 <!-- REQUISITOS -->
 <section id="requisitos">
